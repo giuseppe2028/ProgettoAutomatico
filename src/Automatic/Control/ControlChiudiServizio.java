@@ -23,7 +23,7 @@ public class ControlChiudiServizio {
         listaTurni = Daemon.getTurni(dataCorrente,oraCorrente);
         for(int i = 0; i<listaTurni.size(); i++){
             //todo mettere il fatto che è riferito ad ogni servizio (all'interno scrivere di turno probabilemnte vi sarà un ref servizio)
-            matricole = Daemon.
+            //matricole = Daemon.
         }
 
     }

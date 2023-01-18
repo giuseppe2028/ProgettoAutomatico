@@ -6,6 +6,7 @@ public class Start {
         new Daemon();
         BoundaryTempo boundaryTempo = new BoundaryTempo();
         boundaryTempo.clickOrarioData();
+        //boundaryTempo.getData();
 
 
     }

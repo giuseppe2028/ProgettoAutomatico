@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class ControlCalcoloStipendi {
-    private int stipendio = 0;
     private List<Integer> matricole;
     List<Object> datiStipendio;
 
@@ -20,29 +19,38 @@ private void calcolo(){
     matricole = Daemon.getMatricole();
     //serebbe per ogni matricola
     for (int i = 0; i<matricole.size(); i++){
-        int stipendio = calcoloStipendio(matricole.get(i));
+        double stipendio = calcoloStipendio(matricole.get(i));
         //calcolo lo stipendio
         System.out.println(stipendio);
     }
 }
-private int calcoloStipendio(int matricola){
+private double calcoloStipendio(int matricola){
+    System.out.println("----------------------------");
+    System.out.println(matricola);
         LocalDate date = LocalDate.now();
         datiStipendio = Daemon.getDatiStipendio(matricola);
         //ottendo le ore totali e li moltiplico per il costo orario
-        stipendio += ((Integer) datiStipendio.get(0) * (Integer) datiStipendio.get(1));
+        //stipendio += (Integer) datiStipendio.get(0) * (Integer) datiStipendio.get(1);
+        int cost = (int)datiStipendio.get(0)*(int)datiStipendio.get(1);
+        double stipendio = cost;
+
         //sottraggo le trattenute fiscali
-        stipendio -= (Integer) datiStipendio.get(2);
+        stipendio = stipendio - (int)datiStipendio.get(2);
         //calcolo la gratifica
         stipendio += (stipendio * getGratifica(matricola));
         //aggiungo le ore di straordinario
-        stipendio += (Integer) datiStipendio.get(3) * 30;
+        stipendio += (int) datiStipendio.get(3)*30;
+
+
         if((Boolean) datiStipendio.get(4)){
             stipendio += (stipendio * 0.1 );
         }
         if(date.getMonthValue() ==12){
             stipendio +=(stipendio*2);
         }
-
+        if(stipendio<0){
+            stipendio = 0;
+        }
 return stipendio;
 }
 private double getGratifica(int matricola){

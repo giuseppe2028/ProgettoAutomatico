@@ -16,7 +16,8 @@ public class BoundaryTempo {
         new ControlUscitaDimenticata();
     }
 
-    public void getData(){
+   /* public void getData(){
         new ControlCalcoloStipendi();
-    }
+    }*/
+
 }

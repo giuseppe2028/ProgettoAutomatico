@@ -28,6 +28,7 @@ public class ControlUscitaDimenticata {
         matricole = Daemon.getMatricoleImpiegati(data,orario);
         for(int i = 0; i<matricole.size();i++){
              orariFineTurno = Daemon.getFineTurno(matricole.get(i),data);
+            System.out.println(orario);
            /* if(orario.isAfter(orariFineTurno.plus(10, ChronoUnit.MINUTES))){
                 if(!Daemon.verifyUscita(matricole.get(i),data)){
                     System.out.println("ora invio la matricola al datore");

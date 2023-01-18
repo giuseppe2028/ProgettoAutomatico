@@ -32,7 +32,7 @@ public class Daemon {
         try {
             matricole = new ArrayList<>();
             System.out.println(Date.valueOf(data).toString());
-            String sql = "select * from Timbratura T, Turno TR where T.ref_turno = TR.id and tipo = 'ENTRATA' and data_turno = '2023-01-11'";
+            String sql = "select * from Timbratura T, Turno TR where T.ref_turno = TR.id and tipo_timbratura = 'ENTRATA' and data_turno = '2023-01-11'";
             preparedStatement  = conn.prepareStatement(sql);
             //preparedStatement.setDate(1, Date.valueOf(data));
             resultSet = preparedStatement.executeQuery();
@@ -50,22 +50,27 @@ public class Daemon {
     }
     public static LocalTime getFineTurno(int matricola,LocalDate date){
         //LocalTime tempo;
-        Time tempo;
+        LocalTime tempo;
         try {
-            String sql = "select fine_turno from Turno where ref_impiegato = ? and data_turno = '2023-01-10'";
+            String sql = "select fine_turno from Turno,Timbratura where ref_impiegato = ? and ref_turno = id and data_turno = '2023-01-10'";
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,matricola);
             //preparedStatement.setDate(2,Date.valueOf(data.toString()));
             System.out.println(matricola);
             resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            tempo= resultSet.getTime(1);
+            if(resultSet.next()){
+                tempo= resultSet.getTime(1).toLocalTime();
+                return tempo;
+            }else{
+                return null;
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println(tempo);
-        return null;
+
+
     }
     public static boolean verifyUscita(int matricola, LocalDate data){
 
@@ -92,12 +97,18 @@ public class Daemon {
 
     private static int oreTotaliDipendente(int matricola){
         try {
-            String sql = "select round(sum((fine_turno - T.inizio_turno)/10000),0) as oreTotaliImpiegati from Turno T,Timbratura TIM where TIM.ref_impiegato = ? and ref_turno = T.id and timbratura_effettuata = true and TIM.tipo = 'USCITA'\n";
+            String sql = "select Timbratura.ref_impiegato, round(sum(fine_turno-Turno.inizio_turno)/10000,0) from Turno, Timbratura where Timbratura.ref_turno = Turno.id and Timbratura.ref_impiegato = ? and Timbratura.tipo_timbratura = 'Uscita' group by Timbratura.ref_impiegato";
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,matricola);
             resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getInt(1);
+            if(resultSet.next()) {
+
+                return resultSet.getInt(2);
+            }
+            else {
+                return 0;
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -127,6 +138,7 @@ public static List<Object> getDatiStipendio(int matricola){
         //aggiungo le trattenute fiscali
         datiStipendio.add(300);
         datiStipendio.add(oreStraordinario(matricola));
+    System.out.println("STRAORDINARIO" + oreStraordinario(matricola));
         datiStipendio.add(isReperibile());
 
 return datiStipendio;
@@ -163,12 +175,16 @@ public static int getServizio(int matricola){
 private static int oreStraordinario(int matricola){
 //todo: aggiungere lo straodinario
     try {
-        String sql = "select round(sum((fine_turno - T.inizio_turno)/10000),0) as oreTotaliImpiegati from Turno T,Timbratura TIM where TIM.ref_impiegato = ? and ref_turno = T.id and timbratura_effettuata = true and T.Straordinario = true";
+        String sql = "select Timbratura.ref_impiegato, round(sum(fine_turno-Turno.inizio_turno)/10000,0) from Turno, Timbratura where Timbratura.ref_turno = Turno.id and Timbratura.ref_impiegato = ? and Timbratura.tipo_timbratura = 'Uscita' and Turno.straordinario = true group by Timbratura.ref_impiegato";
         preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1,matricola);
         resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getInt(1);
+        if(resultSet.next()){
+            return resultSet.getInt(2);
+        }
+        else{
+            return 0;
+        }
     } catch (SQLException e) {
         throw new RuntimeException(e);
     }
@@ -252,6 +268,7 @@ public static List<Integer> matricoleReperibile(){
 
     }
 public static List<Integer> getMatricoleImpiegati(Turni turno, int servizio){
+     return null;
         //todo da implementare
 }
 
