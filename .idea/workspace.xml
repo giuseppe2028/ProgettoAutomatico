@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d2fe050-1840-49ca-97e8-ff242431b4a3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/activation.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/javax_mail.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/mysql_connector_j_8_0_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProgettoAutomatico.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/Boundary/BoundaryTempo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlCalcoloStipendi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlChiudiServizio.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlStraordinario.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlUscitaDimenticata.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/JavaMail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/Turni.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/Util/Daemon.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Orologio.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Start.java" afterDir="false" />
-    </list>
+    <list default="true" id="4d2fe050-1840-49ca-97e8-ff242431b4a3" name="Changes" comment="progetto" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -87,11 +65,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1673905171276</updated>
-      <workItem from="1673905173791" duration="27781000" />
+      <workItem from="1673905173791" duration="27819000" />
     </task>
+    <task id="LOCAL-00001" summary="progetto">
+      <created>1674052005608</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674052005608</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="progetto" />
+    <option name="LAST_COMMIT_MESSAGE" value="progetto" />
   </component>
 </project>
