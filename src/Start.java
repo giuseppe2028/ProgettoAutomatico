@@ -1,0 +1,13 @@
+import Automatic.Boundary.BoundaryTempo;
+import Automatic.Util.Daemon;
+
+public class Start {
+    public static void main(String[] args) {
+        new Daemon();
+        BoundaryTempo boundaryTempo = new BoundaryTempo();
+        boundaryTempo.clickOrarioData();
+
+
+    }
+
+}
