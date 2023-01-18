@@ -14,7 +14,9 @@ public class ControlUscitaDimenticata {
 
     //private LocalTime orario = LocalTime.now();
     //private LocalDate data = LocalDate.now();
-    private LocalTime orario = LocalTime.of(8,00,00);
+
+    //FORSE FUNZIONA
+    private LocalTime orario = LocalTime.of(20,10,00);
     private LocalDate data = LocalDate.of(2023,01,11);
     private List<Integer> matricole;
     private LocalTime orariFineTurno;
@@ -27,13 +29,16 @@ public class ControlUscitaDimenticata {
     private void calcolo(){
         matricole = Daemon.getMatricoleImpiegati(data,orario);
         for(int i = 0; i<matricole.size();i++){
+            System.out.println("matricola: " + matricole.get(i));
              orariFineTurno = Daemon.getFineTurno(matricole.get(i),data);
-            System.out.println(orario);
-           /* if(orario.isAfter(orariFineTurno.plus(10, ChronoUnit.MINUTES))){
+             System.out.println("FINE TURNO "+orariFineTurno);
+           if(orario.isAfter(orariFineTurno.plus(10, ChronoUnit.MINUTES))){
                 if(!Daemon.verifyUscita(matricole.get(i),data)){
                     System.out.println("ora invio la matricola al datore");
+                    //timbro l'uscita
+                    Daemon.insertTimbraturaUscitaDimenticata(matricole.get(i),);
                 }
-        }*/
+        }
 
         }
     }
