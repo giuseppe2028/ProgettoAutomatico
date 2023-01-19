@@ -10,14 +10,15 @@ public class Turni {
     private LocalTime inizioTurno;
     private LocalTime fineTurno;
     private LocalDate dataTurno;
-
-    public Turni(int id, int refImpiegfato, String tipoturno, LocalTime inizioTurno, LocalTime fineTurno, LocalDate dataTurno){
+private boolean straordinario;
+    public Turni(int id, String tipoturno, LocalTime inizioTurno, LocalTime fineTurno, LocalDate dataTurno,boolean straordinario){
         this.id = id;
-        this.refImpiegfato = refImpiegfato;
         this.tipoturno = tipoturno;
         this.inizioTurno = inizioTurno;
         this.fineTurno = fineTurno;
         this.dataTurno = dataTurno;
+        this.straordinario = straordinario;
+
     }
 
 

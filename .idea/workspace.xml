@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d2fe050-1840-49ca-97e8-ff242431b4a3" name="Changes" comment="progetto">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3026b0e5-f74c-4d35-bff6-9becb9bc07e4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3026b0e5-f74c-4d35-bff6-9becb9bc07e4.xml" afterDir="false" />
+    <list default="true" id="4d2fe050-1840-49ca-97e8-ff242431b4a3" name="Changes" comment="spero di non aver perso niente">
+      <change afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlPianificaTurni.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Automatic/RichiestaAstensione.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Automatic/Boundary/BoundaryTempo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Boundary/BoundaryTempo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Automatic/Control/ControlStraordinario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlStraordinario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Automatic/Control/ControlUscitaDimenticata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlUscitaDimenticata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Automatic/Turni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Turni.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Automatic/Util/Daemon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Util/Daemon.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Start.java" afterDir="false" />
     </list>
@@ -80,7 +83,7 @@
       <updated>1673905171276</updated>
       <workItem from="1673905173791" duration="27819000" />
       <workItem from="1674055029119" duration="10116000" />
-      <workItem from="1674071032583" duration="5366000" />
+      <workItem from="1674071032583" duration="15489000" />
     </task>
     <task id="LOCAL-00001" summary="progetto">
       <created>1674052005608</created>
@@ -89,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674052005608</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="spero di non aver perso niente">
+      <created>1674076466301</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1674076466301</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -120,6 +130,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="progetto" />
-    <option name="LAST_COMMIT_MESSAGE" value="progetto" />
+    <MESSAGE value="spero di non aver perso niente" />
+    <option name="LAST_COMMIT_MESSAGE" value="spero di non aver perso niente" />
   </component>
 </project>

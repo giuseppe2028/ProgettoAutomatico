@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 public class ControlUscitaDimenticata {
@@ -36,7 +37,7 @@ public class ControlUscitaDimenticata {
                 if(!Daemon.verifyUscita(matricole.get(i),data)){
                     System.out.println("ora invio la matricola al datore");
                     //timbro l'uscita
-                    Daemon.insertTimbraturaUscitaDimenticata(matricole.get(i),);
+                    Daemon.insertTimbraturaUscitaDimenticata((Integer) Daemon.getDatiTurni(matricole.get(i),data).get(0),(Integer) Daemon.getDatiTurni(matricole.get(i),data).get(1), (String)Daemon.getDatiTurni(matricole.get(i),data).get(2),"Uscita","Uscita Dimenticata",(LocalDate) Daemon.getDatiTurni(matricole.get(i),data).get(3),(LocalTime) Daemon.getDatiTurni(matricole.get(i),data).get(4));
                 }
         }
 

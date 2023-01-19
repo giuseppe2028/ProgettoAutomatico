@@ -9,9 +9,9 @@ public class Start {
 
 
         BoundaryTempo boundaryTempo = new BoundaryTempo();
-        boundaryTempo.clickOrarioData();
+        //boundaryTempo.clickOrarioData();
         //boundaryTempo.getData();
-
+        boundaryTempo.getDataStraordinario();
 
 
     }

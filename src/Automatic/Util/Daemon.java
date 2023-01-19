@@ -1,5 +1,6 @@
 package Automatic.Util;
 
+import Automatic.RichiestaAstensione;
 import Automatic.Turni;
 
 import java.sql.*;
@@ -55,7 +56,7 @@ public class Daemon {
         //LocalTime tempo;
         LocalTime tempo;
         try {
-            String sql = "select fine_turno from Turno,Timbratura where ref_impiegato = ? and ref_turno = id and data_turno = '2023-01-11'";
+            String sql = "select fine_turno from Turno,Timbratura where ref_impiegato = ? and ref_turno = id and ref_tipo_turno = tipo_turno and data_turno = '2023-01-11'";
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,matricola);
             //preparedStatement.setDate(2,Date.valueOf(data.toString()));
@@ -88,7 +89,8 @@ public class Daemon {
             preparedStatement.setString(5,motivazione);
             preparedStatement.setDate(6, Date.valueOf(data));
             preparedStatement.setTime(7,Time.valueOf(ora));
-
+            preparedStatement.execute();
+            System.out.println("finito");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -227,12 +229,15 @@ private static boolean isReperibile(){
 public static List<Turni> getTurni(LocalDate dataCorrente, LocalTime oraCorrente){
 List<Turni> listaDaRitornare = new ArrayList<>();
     try {
-        String sql = "select T.* from Turno T, Timbratura TR where TR.ref_turno = T.id and T.data_turno = ? and TR.tipo_timbratura = 'ENTRATA'";
+        String sql = "select T.* from Turno T, Timbratura TR where TR.ref_turno = T.id and T.tipo_turno = TR.ref_tipo_turno and T.data_turno = ? and TR.tipo_timbratura = 'ENTRATA'";
         preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setDate(1,Date.valueOf(dataCorrente));
         resultSet = preparedStatement.executeQuery();
+
         while(resultSet.next()){
-           listaDaRitornare.add(new Turni(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3),resultSet.getTime(4).toLocalTime(),resultSet.getTime(5).toLocalTime(),resultSet.getDate(6).toLocalDate()));
+           listaDaRitornare.add(new Turni(resultSet.getInt(1),resultSet.getString(2),resultSet.getTime(3).toLocalTime(),resultSet.getTime(4).toLocalTime(),resultSet.getDate(5).toLocalDate(),resultSet.getBoolean(6)));
         }
+
         return  listaDaRitornare;
     } catch (SQLException e) {
         throw new RuntimeException(e);
@@ -294,17 +299,20 @@ public static List<Integer> getMatricoleImpiegati(Turni turno, int servizio){
         //todo da implementare
 }
 
-public List<Object> getDatiTurni(int matricola, LocalDate data){
+public static List<Object> getDatiTurni(int matricola, LocalDate data){
     List<Object> listaRitorno = new ArrayList<>();
     try {
-        String sql =  "select id,tipo_turno,fine_turno from Turno,Timbratura where ref_impiegato = ? and ref_turno = id and data_turno = '2023-01-11'";
+        System.out.println(matricola);
+        String sql =  "select id,tipo_turno,data_turno,fine_turno from Turno,Timbratura where ref_impiegato = ? and ref_turno = id and ref_tipo_turno = tipo_turno and data_turno = '2023-01-11'";
         preparedStatement = conn.prepareStatement(sql);
        preparedStatement.setInt(1,matricola);
+       resultSet = preparedStatement.executeQuery();
        if(resultSet.next()){
            listaRitorno.add(matricola);
            listaRitorno.add(resultSet.getInt(1));
           listaRitorno.add( resultSet.getString(2));
-          listaRitorno.add(resultSet.getTime(1));
+          listaRitorno.add(resultSet.getDate(3).toLocalDate());
+          listaRitorno.add(resultSet.getTime(4).toLocalTime());
           return  listaRitorno;
 
        }else {
@@ -315,5 +323,42 @@ public List<Object> getDatiTurni(int matricola, LocalDate data){
     }
 
 }
+public static List<RichiestaAstensione> getRichiesteAstensione(LocalDate dataCorrente){
+        List<RichiestaAstensione> richiestaAstensione = new ArrayList<>();
+    try {
+        String sql = "select * from richiesta where ? > Richiesta.data_inizio and ?<Richiesta.data_fine";
+        preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setDate(1,Date.valueOf(dataCorrente));
+        preparedStatement.setDate(2,Date.valueOf(dataCorrente));
+
+        resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()){
+            richiestaAstensione.add(new RichiestaAstensione(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3),resultSet.getString(4),resultSet.getDate(5).toLocalDate(),resultSet.getDate(6).toLocalDate(),resultSet.getTime(7).toLocalTime(),resultSet.getTime(8).toLocalTime(),resultSet.getString(9),resultSet.getString(10),resultSet.getString(11),resultSet.getBlob(12)));
+        }
+        return richiestaAstensione;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+
+
+}
+    public static List<RichiestaAstensione> getRichiesteAstensione(int matricola){
+        List<RichiestaAstensione> richiestaAstensione = new ArrayList<>();
+        try {
+            String sql = "select * from richiesta where ref_impiegato = ?";
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1,matricola);
+
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                richiestaAstensione.add(new RichiestaAstensione(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3),resultSet.getString(4),resultSet.getDate(5).toLocalDate(),resultSet.getDate(6).toLocalDate(),resultSet.getTime(7).toLocalTime(),resultSet.getTime(8).toLocalTime(),resultSet.getString(9),resultSet.getString(10),resultSet.getString(11),resultSet.getBlob(12)));
+            }
+            return richiestaAstensione;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 }
 
