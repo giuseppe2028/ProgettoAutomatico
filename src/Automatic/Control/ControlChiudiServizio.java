@@ -9,15 +9,15 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-public class ControlChiudiServizio {
+public class ControlChiudiServizio implements Runnable{
     LocalDate dataCorrente;
     LocalTime oraCorrente;
     public ControlChiudiServizio(){
         dataCorrente= LocalDate.now();
         oraCorrente = LocalTime.now();
-        calcolo();
     }
-    private void calcolo(){
+    public void run(){
+        System.out.println("thread chiudi servizio avviato");
         List<Turni> listaTurni;
         List<Integer> matricole;
         listaTurni = Daemon.getTurni(dataCorrente,oraCorrente);

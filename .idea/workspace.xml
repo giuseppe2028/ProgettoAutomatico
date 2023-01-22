@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d2fe050-1840-49ca-97e8-ff242431b4a3" name="Changes" comment="spero di non aver perso niente">
-      <change afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlPianificaTurni.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Automatic/RichiestaAstensione.java" afterDir="false" />
+    <list default="true" id="4d2fe050-1840-49ca-97e8-ff242431b4a3" name="Changes" comment="Quasi finito l'algoritmo di gestione turni">
+      <change afterPath="$PROJECT_DIR$/src/Automatic/Control/PianificaTurni.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3026b0e5-f74c-4d35-bff6-9becb9bc07e4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3026b0e5-f74c-4d35-bff6-9becb9bc07e4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Automatic/Boundary/BoundaryTempo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Boundary/BoundaryTempo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Automatic/Control/ControlCalcoloStipendi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlCalcoloStipendi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Automatic/Control/ControlChiudiServizio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlChiudiServizio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Automatic/Control/ControlPianificaTurni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlPianificaTurni.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Automatic/Control/ControlStraordinario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlStraordinario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Automatic/Control/ControlUscitaDimenticata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Control/ControlUscitaDimenticata.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Automatic/Turni.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Turni.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Automatic/Util/Daemon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Automatic/Util/Daemon.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Start.java" afterDir="false" />
     </list>
@@ -42,29 +44,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/giuseppebarone/Desktop/ProgettoAutomatico/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "database.data.views",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/giuseppebarone/Desktop/ProgettoAutomatico&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;database.data.views&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
@@ -83,7 +85,10 @@
       <updated>1673905171276</updated>
       <workItem from="1673905173791" duration="27819000" />
       <workItem from="1674055029119" duration="10116000" />
-      <workItem from="1674071032583" duration="15489000" />
+      <workItem from="1674071032583" duration="26630000" />
+      <workItem from="1674207823930" duration="4626000" />
+      <workItem from="1674260306332" duration="3330000" />
+      <workItem from="1674302389288" duration="25063000" />
     </task>
     <task id="LOCAL-00001" summary="progetto">
       <created>1674052005608</created>
@@ -99,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674076466301</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Quasi finito l'algoritmo di gestione turni">
+      <created>1674091791927</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1674091791927</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,6 +143,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="progetto" />
     <MESSAGE value="spero di non aver perso niente" />
-    <option name="LAST_COMMIT_MESSAGE" value="spero di non aver perso niente" />
+    <MESSAGE value="Quasi finito l'algoritmo di gestione turni" />
+    <option name="LAST_COMMIT_MESSAGE" value="Quasi finito l'algoritmo di gestione turni" />
   </component>
 </project>

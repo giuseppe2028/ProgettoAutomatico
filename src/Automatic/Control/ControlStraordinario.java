@@ -10,16 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ControlStraordinario {
+public class ControlStraordinario implements Runnable{
+    public ControlStraordinario(){
+
+    }
 //LocalTime oraCorrente = LocalTime.now();
 //LocalDate dataCorrente = LocalDate.now();
     LocalTime oraCorrente = LocalTime.of(23,9,10);
     LocalDate dataCorrente = LocalDate.of(2023,1,11);
 
-public ControlStraordinario(){
-    esegue();
-}
-    private void esegue(){
+@Override
+public void run(){
+    System.out.println("thread straordinario avviato");
     JavaMail mail = new JavaMail();
     int matricola;
         for(int i = 0; i< Daemon.getTurni(dataCorrente,oraCorrente).size(); i++ ){

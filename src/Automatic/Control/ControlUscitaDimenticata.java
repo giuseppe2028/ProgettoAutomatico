@@ -11,23 +11,22 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
-public class ControlUscitaDimenticata {
+public class ControlUscitaDimenticata implements Runnable{
 
     //private LocalTime orario = LocalTime.now();
     //private LocalDate data = LocalDate.now();
+public ControlUscitaDimenticata(){
 
+}
     //FORSE FUNZIONA
     private LocalTime orario = LocalTime.of(20,10,00);
     private LocalDate data = LocalDate.of(2023,01,11);
     private List<Integer> matricole;
     private LocalTime orariFineTurno;
 
-    public ControlUscitaDimenticata(){
-
-        calcolo();
-    }
-
-    private void calcolo(){
+    @Override
+    public void run(){
+        System.out.println("thread uscita dimenticata avviato");
         matricole = Daemon.getMatricoleImpiegati(data,orario);
         for(int i = 0; i<matricole.size();i++){
             System.out.println("matricola: " + matricole.get(i));

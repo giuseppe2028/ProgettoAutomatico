@@ -36,7 +36,7 @@ public class Daemon {
             System.out.println(Date.valueOf(data).toString());
             //query originaleselect * from Timbratura T, Turno TR where T.ref_turno = TR.id and tipo_timbratura = 'ENTRATA' and data_turno = '2023-01-11'
 
-            String sql = "select * from Timbratura T, Turno TR where T.ref_turno = TR.id and tipo_timbratura = 'ENTRATA' and data_turno = '2023-01-11'";
+            String sql = "select * from Timbratura T, Turno TR where T.ref_data = TR.data_turno and T.ref_impiegato =TR.ref_impiegato and tipo_timbratura = 'ENTRATA' and data_turno = '2023-01-11'";
             preparedStatement  = conn.prepareStatement(sql);
             //preparedStatement.setDate(1, Date.valueOf(data));
             resultSet = preparedStatement.executeQuery();
@@ -45,18 +45,18 @@ public class Daemon {
 
             }
             resultSet.close();
-            preparedStatement.close();
             return matricole;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
     }
+    //da rivedere
     public static LocalTime getFineTurno(int matricola,LocalDate date){
         //LocalTime tempo;
         LocalTime tempo;
         try {
-            String sql = "select fine_turno from Turno,Timbratura where ref_impiegato = ? and ref_turno = id and ref_tipo_turno = tipo_turno and data_turno = '2023-01-11'";
+            String sql = "select fine_turno from Turno,Timbratura where ref_impiegato = ? and Turno.ref_impiegato = Timbratura.ref_impiegato and Turno.data_turno = Timbratura.ref_data and data_turno = '2023-01-11'";
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,matricola);
             //preparedStatement.setDate(2,Date.valueOf(data.toString()));
@@ -99,7 +99,7 @@ public class Daemon {
     public static boolean verifyUscita(int matricola, LocalDate data){
 
         try {
-            String sql = "select * from Timbratura T, Turno TR where T.ref_impiegato =? and T.ref_turno = TR.id and data_turno = ? and T.tipo_timbratura = 'USCITA'";
+            String sql = "select * from Timbratura T, Turno TR where T.ref_impiegato =? and T.ref_data = TR.data_turno and T.ref_impiegato = TR.ref_impiegato and data_turno = ? and T.tipo_timbratura = 'USCITA'";
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,matricola);
             preparedStatement.setDate(2,Date.valueOf(data));
@@ -120,10 +120,12 @@ public class Daemon {
 
 
     private static int oreTotaliDipendente(int matricola){
+
         try {
-            String sql = "select Timbratura.ref_impiegato, round(sum(fine_turno-Turno.inizio_turno)/10000,0) from Turno, Timbratura where Timbratura.ref_turno = Turno.id and Timbratura.ref_impiegato = ? and Timbratura.tipo_timbratura = 'Uscita' group by Timbratura.ref_impiegato";
+            String sql = "select Timbratura.ref_impiegato, round(sum(fine_turno-Turno.inizio_turno)/10000,0) from Turno, Timbratura where Turno.ref_impiegato = Timbratura.ref_impiegato and Turno.data_turno = Timbratura.ref_data and Timbratura.ref_impiegato = ? and Timbratura.tipo_timbratura = 'Uscita' and MONTH(data_turno) = ?  group by Timbratura.ref_impiegato";
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,matricola);
+            preparedStatement.setInt(2,LocalDate.now().getMonthValue());
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
 
@@ -199,9 +201,10 @@ public static int getServizio(int matricola){
 private static int oreStraordinario(int matricola){
 //todo: aggiungere lo straodinario
     try {
-        String sql = "select Timbratura.ref_impiegato, round(sum(fine_turno-Turno.inizio_turno)/10000,0) from Turno, Timbratura where Timbratura.ref_turno = Turno.id and Timbratura.ref_impiegato = ? and Timbratura.tipo_timbratura = 'Uscita' and Turno.straordinario = true group by Timbratura.ref_impiegato";
+        String sql = "select Timbratura.ref_impiegato, round(sum(fine_turno-Turno.inizio_turno)/10000,0) from Turno, Timbratura where Turno.ref_impiegato = Timbratura.ref_impiegato and Turno.data_turno = Timbratura.ref_data and Timbratura.ref_impiegato = ? and Timbratura.tipo_timbratura = 'Uscita' and Turno.straordinario = true group by Timbratura.ref_impiegato and MONTH(data_turno) = ?";
         preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1,matricola);
+        preparedStatement.setInt(2,LocalDate.now().getMonthValue());
         resultSet = preparedStatement.executeQuery();
         if(resultSet.next()){
             return resultSet.getInt(2);
@@ -229,7 +232,7 @@ private static boolean isReperibile(){
 public static List<Turni> getTurni(LocalDate dataCorrente, LocalTime oraCorrente){
 List<Turni> listaDaRitornare = new ArrayList<>();
     try {
-        String sql = "select T.* from Turno T, Timbratura TR where TR.ref_turno = T.id and T.tipo_turno = TR.ref_tipo_turno and T.data_turno = ? and TR.tipo_timbratura = 'ENTRATA'";
+        String sql = "select T.* from Turno T, Timbratura TR where T.ref_impiegato = TR.ref_impiegato and T.data_turno = TR.ref_data and T.data_turno = ? and TR.tipo_timbratura = 'ENTRATA'";
         preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setDate(1,Date.valueOf(dataCorrente));
         resultSet = preparedStatement.executeQuery();
@@ -267,12 +270,12 @@ public static List<Integer> matricoleReperibile(){
         try {
             String sql ="insert into Turno values (?,?,?,?,?,?)";
             preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(1,turno.getId());
-            preparedStatement.setInt(2,matricola);
-            preparedStatement.setString(3,turno.getTipoturno());
-            preparedStatement.setTime(4,Time.valueOf(turno.getInizioTurno()));
-            preparedStatement.setTime(5,Time.valueOf(turno.getFineTurno()));
-            preparedStatement.setDate(6,Date.valueOf(turno.getDataTurno()));
+            preparedStatement.setString(1,turno.getTipoturno());
+            preparedStatement.setTime(2,Time.valueOf(turno.getInizioTurno()));
+            preparedStatement.setTime(3,Time.valueOf(turno.getFineTurno()));
+            preparedStatement.setDate(4,Date.valueOf(turno.getDataTurno()));
+            preparedStatement.setBoolean(5,false);
+            preparedStatement.setInt(6,matricola);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -303,7 +306,7 @@ public static List<Object> getDatiTurni(int matricola, LocalDate data){
     List<Object> listaRitorno = new ArrayList<>();
     try {
         System.out.println(matricola);
-        String sql =  "select id,tipo_turno,data_turno,fine_turno from Turno,Timbratura where ref_impiegato = ? and ref_turno = id and ref_tipo_turno = tipo_turno and data_turno = '2023-01-11'";
+        String sql =  "select tipo_turno,data_turno,fine_turno from Turno,Timbratura where ref_impiegato = ? and Turno.ref_impiegato = Timbratura.ref_impiegato and Turno.data_turno = Timbratura.ref_data and data_turno = '2023-01-11'";
         preparedStatement = conn.prepareStatement(sql);
        preparedStatement.setInt(1,matricola);
        resultSet = preparedStatement.executeQuery();
@@ -360,5 +363,143 @@ public static List<RichiestaAstensione> getRichiesteAstensione(LocalDate dataCor
 
 
     }
-}
+    public static int getNumImpiegati(){
+
+        try {
+            String sql = "select count(matricola) from Impiegato where ruolo = 'Impiegato'";
+            preparedStatement = conn.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public static int getNumAmministrativi(){
+
+        try {
+            String sql = "select count(matricola) from Impiegato where ruolo = 'Amministrativo'";
+            preparedStatement = conn.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public static void insertPropostaTurni(String tipoTurno,LocalTime inizioTurno,LocalTime fineTurno,LocalDate dataTurno,int matricola){
+
+        try {
+            String sql = "insert into PropostaTurno values (?,?,?,?,?)";
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1,matricola);
+            preparedStatement.setString(2,tipoTurno);
+            preparedStatement.setTime(3,Time.valueOf(inizioTurno));
+            preparedStatement.setTime(4,Time.valueOf(fineTurno));
+            preparedStatement.setDate(5,Date.valueOf(dataTurno));
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+    public static void copia(){
+        try {
+            String sql ="Select * from propostaturno";
+            preparedStatement = conn.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            copia1(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    private static void copia1(ResultSet resultSet){
+
+            try {
+                while (resultSet.next()){
+                    System.out.println("entro");
+                    String sql1 = "insert into Turno values(?,?,?,?,?,?)";
+                    preparedStatement = conn.prepareStatement(sql1);
+                    preparedStatement.setString(1,resultSet.getString(2));
+                    preparedStatement.setTime(2,resultSet.getTime(3));
+                    preparedStatement.setTime(3,resultSet.getTime(4));
+                    preparedStatement.setDate(4,resultSet.getDate(5));
+                    preparedStatement.setBoolean(5,false);
+                    preparedStatement.setInt(6,resultSet.getInt(1));
+                    preparedStatement.execute();
+
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+
+        }
+        public static void timbraImpiegato(int impiegato){
+        LocalTime inizio = LocalTime.of(8,0);
+            LocalTime fine = LocalTime.of(14,0);
+            try {
+                String sql = "select * from turno where ref_impiegato = ?";
+                preparedStatement = conn.prepareStatement(sql);
+                preparedStatement.setInt(1, impiegato);
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()){
+                    String sql1 = "insert into timbratura values (?,?,?,?,?,?)";
+                    preparedStatement = conn.prepareStatement(sql1);
+                    preparedStatement.setDate(1,resultSet.getDate(4));
+                    preparedStatement.setInt(2,resultSet.getInt(6));
+                    preparedStatement.setString(3,"ENTRATA");
+                    preparedStatement.setString(4,"null");
+                    preparedStatement.setDate(5,resultSet.getDate(4));
+                    preparedStatement.setTime(6,Time.valueOf(inizio));
+                    preparedStatement.execute();
+                    String sql2 = "insert into timbratura values (?,?,?,?,?,?)";
+                    preparedStatement = conn.prepareStatement(sql1);
+                    preparedStatement.setDate(1,resultSet.getDate(4));
+                    preparedStatement.setInt(2,resultSet.getInt(6));
+                    preparedStatement.setString(3,"USCITA");
+                    preparedStatement.setString(4,"null");
+                    preparedStatement.setDate(5,resultSet.getDate(4));
+                    preparedStatement.setTime(6,Time.valueOf(inizio));
+                    preparedStatement.execute();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+        public static void insertStipendio(List<Object> listaDaInserire){
+            try {
+                String sql = "insert into Stipendio values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                preparedStatement = conn.prepareStatement(sql);
+                preparedStatement.setInt(1,(int)listaDaInserire.get(0));
+                preparedStatement.setString(2,(String) listaDaInserire.get(1));
+                preparedStatement.setInt(3,(int)listaDaInserire.get(2));
+                preparedStatement.setInt(4,(int) listaDaInserire.get(3));
+                preparedStatement.setInt(5,(int) listaDaInserire.get(4));
+                preparedStatement.setDouble(6,(double) listaDaInserire.get(5));
+                preparedStatement.setDouble(7,(double) listaDaInserire.get(6));
+                preparedStatement.setInt(8,(int) listaDaInserire.get(7));
+                preparedStatement.setInt(9,(int) listaDaInserire.get(8));
+                preparedStatement.setBoolean(10,(boolean) listaDaInserire.get(9));
+                preparedStatement.setDouble(11,(double) listaDaInserire.get(10));
+                preparedStatement.setInt(12,(int) listaDaInserire.get(11));
+                preparedStatement.setDouble(13,(double) listaDaInserire.get(12));
+                preparedStatement.setInt(14,(int) listaDaInserire.get(13));
+                preparedStatement.setDouble(15,(double) listaDaInserire.get(14));
+                preparedStatement.execute();
+
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+
+        }
+    }
+
+
 
